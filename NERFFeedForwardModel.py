@@ -81,8 +81,13 @@ def integrate(nerf_eval, scalar_array):
   mid_term = 1 - torch.exp(-sigma[...,:-1] * diffs[None, :]) #batch_size, num_integration_points-1
   return ((T * mid_term)[..., None] * color[:,:-1,:]).sum(dim=-2) # batch_size, 3
    
-
-
+# takes in nerf model, batched homogenous pixels, batched intrinsics, batched extrinsics, scene start, scene end, num points for integration
+def full_forward_pass(model, pixel_homogenous, intrinsics, extrinsics, scene_start, scene_end, num_integration_points):
+  scalar_array = get_scalar_array(scene_start, scene_end, num_integration_points)
+  ray, direction = pixel_intrinsics_extrinsics_to_ray(pixel_homogenous, intrinsics, extrinsics, scalar_array)
+  nerf_eval = evaluate_nerf_along_ray(model, ray, direction)
+  rendered_color = integrate(nerf_eval, scalar_array)
+  return rendered_color 
 
 
 
