@@ -110,7 +110,8 @@ def _load_data(basedir, factor=None, width=None, height=None, load_imgs=True):
     
     def imread(f):
         if f.endswith('png'):
-            return imageio.imread(f, ignoregamma=True)
+            # return imageio.imread(f, ignoregamma=True)
+            return imageio.imread(f) # took out the previous line
         else:
             return imageio.imread(f)
         
