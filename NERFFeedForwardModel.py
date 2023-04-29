@@ -67,7 +67,7 @@ def evaluate_nerf_along_ray(nerf_model, world_points, normalized_world_direction
   normalized_world_direction = normalized_world_direction[:,None,:].expand_as(world_points)
   # should be on shape batch_size, num_integration_points, 6
   nn_in = torch.cat(world_points, normalized_world_direction, dim = -1)
-  return nerf_model(nn_in.view(-1, 6)).view(batch_size, num_integration_points, 6)
+  return nerf_model(nn_in.view(-1, 6)).view(batch_size, num_integration_points, 4)
    
 
 # 
