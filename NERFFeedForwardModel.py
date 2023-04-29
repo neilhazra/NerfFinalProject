@@ -70,14 +70,17 @@ def evaluate_nerf_along_ray(nerf_model, world_points, normalized_world_direction
   return nerf_model(nn_in.view(-1, 6)).view(batch_size, num_integration_points, 4)
    
 
-# 
-# 
-#
+# nerf eval is of size batch_size, num_integration_points, 4
+# scalar_array is of shape num_integration_points
 def integrate(nerf_eval, scalar_array):
+  color =  nerf_eval[..., :3] # batch_size, num_integration_points, 3
+  sigma = nerf_eval[..., 3] # batch_size, num_integration_points
+  diffs = torch.diff(scalar_array) # num_integration_points-1
+  # see page 6 in https://arxiv.org/pdf/2003.08934.pdf
+  T = torch.exp(torch.cumsum(sigma[...,:-1] * diffs[None, :], dim = -1)) #batch_size, num_integration_points-1
+  mid_term = 1 - torch.exp(-sigma[...,:-1] * diffs[None, :]) #batch_size, num_integration_points-1
+  return ((T * mid_term)[..., None] * color[:,:-1,:]).sum(dim=-2) # batch_size, 3
    
-   return 
-   
-
 
 
 
