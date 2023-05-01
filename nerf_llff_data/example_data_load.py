@@ -19,18 +19,11 @@ H, W, focal = hwf
 H, W = int(H), int(W)
 hwf = [H, W, focal]
 
+pixel_offset = np.array([W, H]) / 2 # px and py
+
 poses = poses[:,:3,:4]
 
 print("loaded llff", images.shape, render_poses.shape, hwf, "./data/llff/fern")
-
-# Compute camera intrinsic matrix
-focal_length = hwf[2] / \
-    (2.0 * np.tan(0.5 * self.hparams['fov'] * np.pi / 180.0))
-intrinsic_mat = np.array([[focal_length, 0.0, 0.5 * hwf[1]],
-                          [0.0, focal_length *
-                              self.hparams['aspect_ratio'], 0.5 * hwf[0]],
-                          [0.0, 0.0, 1.0]])
-print(intrinsic_mat)
 
 ########################## EXTRINSICS ##################################
 
@@ -41,3 +34,18 @@ poses = np.load(poses_file)
 # camera extrinsics for each of the 20 images
 extrinsics = poses[:, :12].reshape(-1, 3, 4)
 # print(extrinsics)
+
+###################### FOV, ASPECT RATIO ###############################
+
+aspect_ratio = W / H
+horiz_fov = 2 * np.arctan(W / (2 * focal))
+fov = 2 * np.arctan(np.tan(horiz_fov / 2) * aspect_ratio)
+
+######################## INTRINSIC MATRIX ##############################
+
+# Compute camera intrinsic matrix (not sure if this is right tbh)
+focal_length = hwf[2] / (2.0 * np.tan(0.5 * fov * np.pi / 180.0))
+intrinsic_mat = np.array([[focal_length, 0.0, 0.5 * hwf[1]],
+                          [0.0, focal_length * aspect_ratio, 0.5 * hwf[0]],
+                          [0.0, 0.0, 1.0]])
+print("intrinsic matrix\n", intrinsic_mat)
