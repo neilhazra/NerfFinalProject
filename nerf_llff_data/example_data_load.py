@@ -22,9 +22,10 @@ import numpy as np
 
 ######################### LOAD BLENDER DATA ###############################
 
-images, poses, bds, render_poses, i_test = load_blender_data("./data/drums")
+# images, poses, bds, render_poses, i_test = load_blender_data("./data/drums")
+images, poses, render_poses, hwf, i_split = load_blender_data("./data/drums")
 
-hwf = poses[0, :3, -1] # image height, image width, focal length (in pixels)
+# hwf = poses[0, :3, -1] # image height, image width, focal length (in pixels)
 
 # cast intrinsics to the right type
 H, W, focal = hwf
@@ -32,7 +33,9 @@ H, W = int(H), int(W)
 hwf = [H, W, focal]
 # poses = poses[:,:3,:4]
 
-print("loaded blender", images[0,:,:,-1].mean())
+print("hwf: \n", hwf)
+
+# print("loaded blender", images[0,:,:,-1].mean())
 
 
 ########################## EXTRINSICS ##################################
@@ -43,4 +46,7 @@ print("loaded blender", images[0,:,:,-1].mean())
 
 ######################## INTRINSIC MATRIX ##############################
 
-# intrinsics = np.array([[focal,0,W/2],[0,focal,H/2],[0,0,1]])
+intrinsics = np.array([[focal,0,W/2],[0,focal,H/2],[0,0,1]])
+print("intrinsics: \n", intrinsics)
+print("H: ", H)
+print("W: ", W)
