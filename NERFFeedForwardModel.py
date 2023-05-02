@@ -88,14 +88,3 @@ def full_forward_pass(model, pixel_homogenous, intrinsics, extrinsics, scene_sta
   nerf_eval = evaluate_nerf_along_ray(model, ray, direction)
   rendered_color = integrate(nerf_eval, scalar_array)
   return rendered_color 
-
-
-
-
-
-
-
-
-
-
-
