@@ -224,7 +224,6 @@ def spherify_poses(poses, bds):
     new_poses = []
     
     for th in np.linspace(0.,2.*np.pi, 120):
-
         camorigin = np.array([radcircle * np.cos(th), radcircle * np.sin(th), zh])
         up = np.array([0,0,-1.])
 
