@@ -2,6 +2,7 @@ import os
 import tensorflow as tf
 import numpy as np
 import imageio
+import cv2
 import json
 
 def trans_t(t): return tf.convert_to_tensor([
@@ -86,3 +87,55 @@ def load_blender_data(basedir, half_res=False, testskip=1):
         focal = focal/2.
 
     return imgs, poses, render_poses, [H, W, focal], i_split
+
+
+def load_blender_data_test_depth(basedir, testskip=1):
+    splits = ['test']
+    metas = {}
+    for s in splits:
+        with open(os.path.join(basedir, 'transforms_{}.json'.format(s)), 'r') as fp:
+            metas[s] = json.load(fp)
+
+    all_imgs = []
+    all_depths  = []
+    all_poses = []
+    counts = [0]
+    for s in splits:
+        meta = metas[s]
+        imgs = []
+        depths = []
+        poses = []
+        if s == 'train' or testskip == 0:
+            skip = 1
+        else:
+            skip = testskip
+
+        for frame in meta['frames'][::skip]:
+            fname = os.path.join(basedir, frame['file_path'] + '.png')
+            d_name = os.path.join(basedir, frame['file_path'] + '_depth_0001.png')
+            imgs.append(imageio.imread(fname))
+            depths.append(cv2.imread(d_name, cv2.IMREAD_ANYDEPTH))
+            poses.append(np.array(frame['transform_matrix']))
+        # keep all 4 channels (RGBA)
+        imgs = (np.array(imgs) / 255.).astype(np.float32)
+        poses = np.array(poses).astype(np.float32)
+        counts.append(counts[-1] + imgs.shape[0])
+        all_depths.append(depths)
+        all_imgs.append(imgs)
+        all_poses.append(poses)
+
+    i_split = [np.arange(counts[i], counts[i+1]) for i in range(len(splits))]
+
+    imgs = np.concatenate(all_imgs, 0)
+    poses = np.concatenate(all_poses, 0)
+    depths = np.concatenate(all_depths, 0)
+
+    H, W = imgs[0].shape[:2]
+    camera_angle_x = float(meta['camera_angle_x'])
+    focal = .5 * W / np.tan(.5 * camera_angle_x)
+
+    render_poses = tf.stack([pose_spherical(angle, -30.0, 4.0)
+                            for angle in np.linspace(-180, 180, 40+1)[:-1]], 0)
+
+
+    return imgs, depths, poses, render_poses, [H, W, focal], i_split
