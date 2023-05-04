@@ -39,7 +39,7 @@ def pose_spherical(theta, phi, radius):
 
 
 def load_blender_data(basedir, half_res=False, testskip=1):
-    splits = ['train', 'val', 'test']
+    splits = ['train'] #['train', 'val', 'test']
     metas = {}
     for s in splits:
         with open(os.path.join(basedir, 'transforms_{}.json'.format(s)), 'r') as fp:
@@ -68,7 +68,7 @@ def load_blender_data(basedir, half_res=False, testskip=1):
         all_imgs.append(imgs)
         all_poses.append(poses)
 
-    i_split = [np.arange(counts[i], counts[i+1]) for i in range(3)]
+    i_split = [np.arange(counts[i], counts[i+1]) for i in range(len(splits))]
 
     imgs = np.concatenate(all_imgs, 0)
     poses = np.concatenate(all_poses, 0)
@@ -89,7 +89,7 @@ def load_blender_data(basedir, half_res=False, testskip=1):
     return imgs, poses, render_poses, [H, W, focal], i_split
 
 
-def load_blender_data_test_depth(basedir, testskip=1):
+def load_blender_data_test_depth(basedir, testskip=1, depth_scale= 0.0254):
     splits = ['test']
     metas = {}
     for s in splits:
@@ -114,7 +114,8 @@ def load_blender_data_test_depth(basedir, testskip=1):
             fname = os.path.join(basedir, frame['file_path'] + '.png')
             d_name = os.path.join(basedir, frame['file_path'] + '_depth_0001.png')
             imgs.append(imageio.imread(fname))
-            depths.append(cv2.imread(d_name, cv2.IMREAD_ANYDEPTH))
+            # i have a suspicion that this is in inches???
+            depths.append(cv2.imread(d_name, cv2.IMREAD_ANYDEPTH).astype(np.float32) * depth_scale)
             poses.append(np.array(frame['transform_matrix']))
         # keep all 4 channels (RGBA)
         imgs = (np.array(imgs) / 255.).astype(np.float32)
