@@ -10,7 +10,7 @@ model = NerfModel()
 optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 
 
-num_iters = 1000
+num_iters = 10000
 
 for i in range(num_iters):
     origins, ray_directions, colors = dataset.get_batch(np.random.choice(len(dataset), 65536))
@@ -21,3 +21,6 @@ for i in range(num_iters):
     loss_val.backward()
     optimizer.step()
     print(loss_val.detach().cpu().numpy())
+    if i % 1000 == 0:
+        with open('nerf_model_' + str(i) + '_.model', 'wb') as f:
+            torch.save(model.state_dict, f)
