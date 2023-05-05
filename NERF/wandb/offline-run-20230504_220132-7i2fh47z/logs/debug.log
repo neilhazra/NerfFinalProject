@@ -1,0 +1,23 @@
+2023-05-04 22:01:32,057 INFO    MainThread:1885607 [wandb_setup.py:_flush():76] Configure stats pid to 1885607
+2023-05-04 22:01:32,057 INFO    MainThread:1885607 [wandb_setup.py:_flush():76] Loading settings from /home/saumyam/.config/wandb/settings
+2023-05-04 22:01:32,057 INFO    MainThread:1885607 [wandb_setup.py:_flush():76] Loading settings from /home/saumyam/NerfFinalProject/NERF/wandb/settings
+2023-05-04 22:01:32,057 INFO    MainThread:1885607 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2023-05-04 22:01:32,057 INFO    MainThread:1885607 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2023-05-04 22:01:32,057 INFO    MainThread:1885607 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program_relpath': 'NERF/RunNerf.py', 'program': '/home/saumyam/NerfFinalProject/NERF/RunNerf.py'}
+2023-05-04 22:01:32,057 INFO    MainThread:1885607 [wandb_init.py:_log_setup():506] Logging user logs to /home/saumyam/NerfFinalProject/NERF/wandb/offline-run-20230504_220132-7i2fh47z/logs/debug.log
+2023-05-04 22:01:32,057 INFO    MainThread:1885607 [wandb_init.py:_log_setup():507] Logging internal logs to /home/saumyam/NerfFinalProject/NERF/wandb/offline-run-20230504_220132-7i2fh47z/logs/debug-internal.log
+2023-05-04 22:01:32,057 INFO    MainThread:1885607 [wandb_init.py:init():546] calling init triggers
+2023-05-04 22:01:32,058 INFO    MainThread:1885607 [wandb_init.py:init():552] wandb.init called with sweep_config: {}
+config: {'learning_rate': 0.0001, 'iters': 10000, 'batch_size': 262144}
+2023-05-04 22:01:32,058 INFO    MainThread:1885607 [wandb_init.py:init():602] starting backend
+2023-05-04 22:01:32,058 INFO    MainThread:1885607 [wandb_init.py:init():606] setting up manager
+2023-05-04 22:01:32,059 INFO    MainThread:1885607 [backend.py:_multiprocessing_setup():106] multiprocessing start_methods=fork,spawn,forkserver, using: spawn
+2023-05-04 22:01:32,085 INFO    MainThread:1885607 [wandb_init.py:init():613] backend started and connected
+2023-05-04 22:01:32,086 INFO    MainThread:1885607 [wandb_init.py:init():701] updated telemetry
+2023-05-04 22:01:32,166 INFO    MainThread:1885607 [wandb_init.py:init():789] starting run threads in backend
+2023-05-04 22:02:00,602 INFO    MainThread:1885607 [wandb_run.py:_console_start():2114] atexit reg
+2023-05-04 22:02:00,603 INFO    MainThread:1885607 [wandb_run.py:_redirect():1969] redirect: SettingsConsole.WRAP_RAW
+2023-05-04 22:02:00,603 INFO    MainThread:1885607 [wandb_run.py:_redirect():2034] Wrapping output streams.
+2023-05-04 22:02:00,603 INFO    MainThread:1885607 [wandb_run.py:_redirect():2059] Redirects installed.
+2023-05-04 22:02:00,603 INFO    MainThread:1885607 [wandb_init.py:init():831] run started, returning control to user process
+2023-05-04 23:42:32,382 WARNING MsgRouterThr:1885607 [router.py:message_loop():77] message_loop has been closed

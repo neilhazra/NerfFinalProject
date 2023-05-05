@@ -1,0 +1,68 @@
+2023-05-04 21:37:21,540 INFO    StreamThr :940472 [internal.py:wandb_internal():87] W&B internal server running at pid: 940472, started at: 2023-05-04 21:37:21.539523
+2023-05-04 21:37:21,540 DEBUG   HandlerThread:940472 [handler.py:handle_request():144] handle_request: status
+2023-05-04 21:37:21,569 INFO    WriterThread:940472 [datastore.py:open_for_write():85] open: /home/saumyam/NerfFinalProject/NERF/wandb/run-20230504_213721-eodkxaau/run-eodkxaau.wandb
+2023-05-04 21:37:21,570 DEBUG   SenderThread:940472 [sender.py:send():336] send: header
+2023-05-04 21:37:21,601 DEBUG   SenderThread:940472 [sender.py:send():336] send: run
+2023-05-04 21:37:22,816 DEBUG   HandlerThread:940472 [handler.py:handle_request():144] handle_request: shutdown
+2023-05-04 21:37:22,817 INFO    HandlerThread:940472 [handler.py:finish():842] shutting down handler
+2023-05-04 21:37:23,610 INFO    WriterThread:940472 [datastore.py:close():298] close: /home/saumyam/NerfFinalProject/NERF/wandb/run-20230504_213721-eodkxaau/run-eodkxaau.wandb
+2023-05-04 21:37:24,853 INFO    SenderThread:940472 [retry.py:__call__():172] Retry attempt failed:
+Traceback (most recent call last):
+  File "/home/saumyam/.conda/envs/nlp/lib/python3.10/site-packages/urllib3/connection.py", line 174, in _new_conn
+    conn = connection.create_connection(
+  File "/home/saumyam/.conda/envs/nlp/lib/python3.10/site-packages/urllib3/util/connection.py", line 72, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+  File "/home/saumyam/.conda/envs/nlp/lib/python3.10/socket.py", line 955, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno -2] Name or service not known
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/saumyam/.conda/envs/nlp/lib/python3.10/site-packages/urllib3/connectionpool.py", line 703, in urlopen
+    httplib_response = self._make_request(
+  File "/home/saumyam/.conda/envs/nlp/lib/python3.10/site-packages/urllib3/connectionpool.py", line 386, in _make_request
+    self._validate_conn(conn)
+  File "/home/saumyam/.conda/envs/nlp/lib/python3.10/site-packages/urllib3/connectionpool.py", line 1042, in _validate_conn
+    conn.connect()
+  File "/home/saumyam/.conda/envs/nlp/lib/python3.10/site-packages/urllib3/connection.py", line 358, in connect
+    self.sock = conn = self._new_conn()
+  File "/home/saumyam/.conda/envs/nlp/lib/python3.10/site-packages/urllib3/connection.py", line 186, in _new_conn
+    raise NewConnectionError(
+urllib3.exceptions.NewConnectionError: <urllib3.connection.HTTPSConnection object at 0x1524e25c5e10>: Failed to establish a new connection: [Errno -2] Name or service not known
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/saumyam/.conda/envs/nlp/lib/python3.10/site-packages/requests/adapters.py", line 489, in send
+    resp = conn.urlopen(
+  File "/home/saumyam/.conda/envs/nlp/lib/python3.10/site-packages/urllib3/connectionpool.py", line 787, in urlopen
+    retries = retries.increment(
+  File "/home/saumyam/.conda/envs/nlp/lib/python3.10/site-packages/urllib3/util/retry.py", line 592, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='api.wandb.ai', port=443): Max retries exceeded with url: /graphql (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x1524e25c5e10>: Failed to establish a new connection: [Errno -2] Name or service not known'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/saumyam/.conda/envs/nlp/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/saumyam/.conda/envs/nlp/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 243, in execute
+    return self.client.execute(*args, **kwargs)  # type: ignore
+  File "/home/saumyam/.conda/envs/nlp/lib/python3.10/site-packages/wandb/vendor/gql-0.2.0/wandb_gql/client.py", line 52, in execute
+    result = self._get_result(document, *args, **kwargs)
+  File "/home/saumyam/.conda/envs/nlp/lib/python3.10/site-packages/wandb/vendor/gql-0.2.0/wandb_gql/client.py", line 60, in _get_result
+    return self.transport.execute(document, *args, **kwargs)
+  File "/home/saumyam/.conda/envs/nlp/lib/python3.10/site-packages/wandb/vendor/gql-0.2.0/wandb_gql/transport/requests.py", line 38, in execute
+    request = requests.post(self.url, **post_args)
+  File "/home/saumyam/.conda/envs/nlp/lib/python3.10/site-packages/requests/api.py", line 115, in post
+    return request("post", url, data=data, json=json, **kwargs)
+  File "/home/saumyam/.conda/envs/nlp/lib/python3.10/site-packages/requests/api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "/home/saumyam/.conda/envs/nlp/lib/python3.10/site-packages/requests/sessions.py", line 587, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/saumyam/.conda/envs/nlp/lib/python3.10/site-packages/requests/sessions.py", line 701, in send
+    r = adapter.send(request, **kwargs)
+  File "/home/saumyam/.conda/envs/nlp/lib/python3.10/site-packages/requests/adapters.py", line 565, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='api.wandb.ai', port=443): Max retries exceeded with url: /graphql (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x1524e25c5e10>: Failed to establish a new connection: [Errno -2] Name or service not known'))

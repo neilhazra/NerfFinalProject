@@ -2,10 +2,12 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch
 
+L = 10
 class NerfModel(nn.Module):
     def __init__(self):
       super(NerfModel, self).__init__()
-      self.linear1 = nn.Linear(6, 128) # x,y,z, normalized_direction_vector
+      # if positionally encoded, 6 * L + 3 x,y,z original + direction
+      self.linear1 = nn.Linear(6*L + 6, 128) # x,y,z, normalized_direction_vector
       self.linear2 = nn.Linear(128, 128)
       self.linear3 = nn.Linear(128, 128)
       self.linear4 = nn.Linear(128, 4) # r,g,b, sigma
@@ -61,15 +63,29 @@ def pixel_intrinsics_extrinsics_to_ray(pixel_homogenous, intrinsics, c2w_3x4, sc
    return world_points_centered, normalized_world_direction
 
 
-def evaluate_nerf_along_ray(nerf_model, world_points, normalized_world_direction):
+def evaluate_nerf_along_ray(nerf_model, world_points, normalized_world_direction, is_pos_encoded=True):
   # should print batch_size, num_integration_points, 3 and (batch_size, 3)
   # next we need to expand normalized_world_direction to be the same size and then concatenate
   batch_size = world_points.shape[0]
   num_integration_points = world_points.shape[1]
   normalized_world_direction = normalized_world_direction[:,None,:].expand_as(world_points)
+  
+  # this is of shape [batch_size, num_integration_points, 3 (XYZ COORDs)]
+  # you want to convert this to something like
+  # batchsize, num_integration_points
+  # cos(x), cos(2x), cos(3x), cos(y), cos(2y), cos(3y) same thing for z
+  # same thing for sin
+  # and then yyou wanna concantenate all of them and put into nn
+  # basically after we just change input layer of nn
   # should be on shape batch_size, num_integration_points, 6
+  if is_pos_encoded:
+    pos_encodings = [world_points]
+    for i in range(L):
+        pos_encodings.append(torch.cos((2**i) * torch.pi* world_points))
+        pos_encodings.append(torch.sin((2**i) * torch.pi* world_points))
+    world_points = torch.concatenate(pos_encodings, dim=2)  
   nn_in = torch.cat([world_points, normalized_world_direction], dim = -1)
-  return nerf_model(nn_in.view(-1, 6)).view(batch_size, num_integration_points, 4)
+  return nerf_model(nn_in.view(-1, 6*L + 6)).view(batch_size, num_integration_points, 4)
   
 
 # nerf eval is of size batch_size, num_integration_points, 4

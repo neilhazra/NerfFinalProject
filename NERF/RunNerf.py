@@ -23,11 +23,13 @@ wandb.init(
     # track hyperparameters and run metadata
     config={
     "learning_rate": 0.0001,
-    "iters": 10000,
+    "iters": 100000,
     "batch_size": 262144,
+    "encoding":"positionally encoded",
+    "L":10,
     }
 )
-num_iters = 10000
+num_iters = 100000
 
 for i in range(num_iters):
     origins, ray_directions, colors = dataset.get_batch(np.random.choice(len(dataset), 65536*4))
@@ -37,7 +39,7 @@ for i in range(num_iters):
     optimizer.zero_grad()
     loss_val.backward()
     optimizer.step()
-    print(loss_val.detach().cpu().numpy())
+    print('Iteration: ', i, 'loss: ', loss_val.detach().cpu().numpy())
     
     if i % 10 == 0:
         log = f"{i} / {num_iters}"
@@ -46,7 +48,7 @@ for i in range(num_iters):
 
         wandb.log({"loss": loss_val.detach().cpu().numpy()}) 
     
-    if i % 100 == 0:
-        with open('nerf_model_' + str(i) + '_.model', 'wb') as f:
+    if i % 5000 == 0:
+        with open('./model_positional_L10/' + 'nerf_model_' + str(i) + '_.model', 'wb') as f:
             torch.save(model.state_dict(), f)
 # wandb sync /home/saumyam/NerfFinalProject/NERF/wandb/offline-run-20230504_2201

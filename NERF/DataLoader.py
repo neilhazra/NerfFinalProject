@@ -1,12 +1,14 @@
 import torch
 import numpy as np
 from load_blender import load_blender_data
+# from load_data import recenter_poses
 from NERFFeedForwardModel import training_forward_pass, NerfModel, loss
+
 
 def pixel_intrinsics_extrinsics_to_ray(pixel_homogenous, intrinsics, c2w_3x4):
    print(pixel_homogenous.shape, intrinsics.shape, c2w_3x4.shape)  
    pixel_homogenous_shape = pixel_homogenous.shape # this should be (batch_size, 3)
-   intrinsics_shape = intrinsics.shape # (batch_size, 3, 3)
+   intrinsics_shape = intrinsics.shape # (batcƒh_size, 3, 3)
    extrinsics_shape = c2w_3x4.shape # (batch_size, 3, 4)
    # all shapes of the inputs
    print('pixel shape, intrinsics shape, extrinsics shape', pixel_homogenous_shape, intrinsics_shape, extrinsics_shape)
@@ -29,6 +31,7 @@ def pixel_intrinsics_extrinsics_to_ray(pixel_homogenous, intrinsics, c2w_3x4):
 class NerfDataset():
     def __init__(self, data_root_dir = "./data/drums"):
         self.images, self.poses, _, hwf, _ = load_blender_data(data_root_dir)
+        # self.poses = recenter_poses(self.poses)
         self.H, self.W, self.focal = hwf
         self.intrinsics = torch.Tensor([[self.focal,0,self.W/2],[0,self.focal,self.H/2],[0,0,1]])
         homogenous_pixels_x, homogenous_pixels_y = torch.meshgrid(torch.arange(self.W), torch.arange(self.H), indexing='xy')
