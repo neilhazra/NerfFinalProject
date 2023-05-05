@@ -12,7 +12,7 @@ os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:256"
 
 
 model = NerfModel().cuda()
-model.load_state_dict(torch.load("./model_50k_nopositional/nerf_model_5000_.model"))
+model.load_state_dict(torch.load("./model_positional_L10/nerf_model_20000_.model"))
 
 images, _, poses, _, [H, W, focal], _ = load_blender_data_test_depth("./data/drums")
 
@@ -37,7 +37,7 @@ with torch.no_grad():
         rendered_colors = torch.cat(rendered_color_splits, dim=0).reshape(800,800,3)    
         print('we have an image', rendered_colors.detach().cpu().numpy().max())
         print('real image', images[i].mean())
-        cv2.imwrite('test_nopositional.png', np.flip((rendered_colors.detach().cpu().numpy()*255).astype(int), axis=-1))
+        cv2.imwrite('131.png', np.flip((rendered_colors.detach().cpu().numpy()*255).astype(int), axis=-1))
         cv2.imwrite('actual.png', np.flip((images[i][...,:3]*255).astype(int), axis=-1))
         
         break

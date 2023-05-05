@@ -26,7 +26,7 @@ wandb.init(
     "iters": 100000,
     "batch_size": 262144,
     "encoding":"positionally encoded",
-    "L":10,
+    "L":15,
     }
 )
 num_iters = 100000
@@ -49,6 +49,6 @@ for i in range(num_iters):
         wandb.log({"loss": loss_val.detach().cpu().numpy()}) 
     
     if i % 5000 == 0:
-        with open('./model_positional_L10/' + 'nerf_model_' + str(i) + '_.model', 'wb') as f:
+        with open('./model_positional_L15/' + 'nerf_model_' + str(i) + '_.model', 'wb') as f:
             torch.save(model.state_dict(), f)
 # wandb sync /home/saumyam/NerfFinalProject/NERF/wandb/offline-run-20230504_2201
