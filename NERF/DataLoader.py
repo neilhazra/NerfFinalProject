@@ -27,7 +27,7 @@ def pixel_intrinsics_extrinsics_to_ray(pixel_homogenous, intrinsics, c2w_3x4):
 
 
 class NerfDataset():
-    def __init__(self, data_root_dir = "/Users/neilhazra/NerfFinalProject/NERF/data/drums"):
+    def __init__(self, data_root_dir = "./data/drums"):
         self.images, self.poses, _, hwf, _ = load_blender_data(data_root_dir)
         self.H, self.W, self.focal = hwf
         self.intrinsics = torch.Tensor([[self.focal,0,self.W/2],[0,self.focal,self.H/2],[0,0,1]])

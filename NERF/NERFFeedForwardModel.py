@@ -28,10 +28,11 @@ class NerfModel(nn.Module):
 # make sure there is a point in every section of the ray
 # add some random noise to make sure we don't sample the ray at the same point during
 # every iteration
+@torch.no_grad()
 def get_scalar_array(scene_start, scene_end, num_integration_points):
-   stratified_points = torch.linspace(scene_start, scene_end, num_integration_points)
+   stratified_points = torch.linspace(scene_start, scene_end, num_integration_points).cuda()
    random_offsets = torch.rand(num_integration_points) * (scene_end - scene_start) / (num_integration_points - 1)
-   return stratified_points + random_offsets
+   return stratified_points + random_offsets.cuda()
 
 # this function takes in batch pixel location homogenous coordinates 
 # batch camera intrinsics and batch camera extrinsics
@@ -93,7 +94,7 @@ def full_forward_pass(model, pixel_homogenous, intrinsics, extrinsics, scene_sta
 # takes in nerf model, batched homogenous pixels, batched intrinsics, batched extrinsics, scene start, scene end, num points for integration
 def training_forward_pass(model, ray_origin, ray_direction, scene_start, scene_end, num_integration_points):
   scalar_array = get_scalar_array(scene_start, scene_end, num_integration_points)
-  ray = ray_direction[:,None, :] * scalar_array[None, :, None] + ray_origin[:,None,:]
+  ray = ray_direction[:,None, :] * scalar_array[None, :, None].cuda() + ray_origin[:,None,:].cuda()
   nerf_eval = evaluate_nerf_along_ray(model, ray, ray_direction)
   rendered_color = integrate(nerf_eval, scalar_array)
   return rendered_color
