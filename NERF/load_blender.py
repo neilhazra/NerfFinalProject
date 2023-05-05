@@ -1,5 +1,5 @@
 import os
-import tensorflow as tf
+#import tensorflow as tf
 import numpy as np
 import imageio
 import cv2
@@ -77,8 +77,8 @@ def load_blender_data(basedir, half_res=False, testskip=1):
     camera_angle_x = float(meta['camera_angle_x'])
     focal = .5 * W / np.tan(.5 * camera_angle_x)
 
-    render_poses = tf.stack([pose_spherical(angle, -30.0, 4.0)
-                            for angle in np.linspace(-180, 180, 40+1)[:-1]], 0)
+    #render_poses = tf.stack([pose_spherical(angle, -30.0, 4.0)
+    #                        for angle in np.linspace(-180, 180, 40+1)###[:-1]], 0)
 
     if half_res:
         imgs = tf.image.resize_area(imgs, [400, 400]).numpy()
@@ -86,7 +86,7 @@ def load_blender_data(basedir, half_res=False, testskip=1):
         W = W//2
         focal = focal/2.
 
-    return imgs, poses, render_poses, [H, W, focal], i_split
+    return imgs, poses, None, [H, W, focal], i_split
 
 
 def load_blender_data_test_depth(basedir, testskip=1, depth_scale= 0.0254):
