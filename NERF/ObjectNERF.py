@@ -1,21 +1,27 @@
 # my own design and idea inspired by BlockNerf and Recursive NERF
 # https://waymo.com/research/block-nerf/
 # and https://arxiv.org/pdf/2105.09103.pdf
+# results in faster performance since the model is smaller and split
+# between multiple neural networks
 
 import torch.nn as nn
 import torch.nn.functional as F
 import torch
 
-L = 10 # positional encodings
+L = 5 # positional encodings
 N = 8 # number of mini-nerf models
 
 class ModelSplitter(nn.Module):
   #maybe make this more complex
   def __init__(self):
     super(ModelSplitter, self).__init__()
-    self.linear1 = nn.Linear(3, N) # x,y,z
+    self.linear1 = nn.Linear(3, 64) # x,y,z
+    self.linear2 = nn.Linear(64, N) # x,y,z
   def forward(self, x):
-    return F.softmax(self.linear1(x), dim=-1)
+    x = self.linear1(x)
+    x = F.relu(x)
+    x = self.linear2(x)
+    return F.softmax(x, dim=-1)
 
 class MiniNerfModel(nn.Module):
     def __init__(self):
@@ -50,7 +56,6 @@ class ObjectNerf(nn.Module):
       evals = torch.stack(evals, dim=-1)
       nerf_eval = (evals * splits[:,:,None, :]).sum(dim = -1)
       rendered_color = integrate(nerf_eval, scalar_array)
-      print(rendered_color.shape)
       return rendered_color, splits
     
     #the goal is that during eval we don't want to evaluate all the mini nerfs
@@ -58,15 +63,27 @@ class ObjectNerf(nn.Module):
     # thus we want the splitting distribution to become the degenerate distribution as the
     # training progresses
     def entropy_loss(splits):
-      return (-(splits * torch.log(splits)).sum(dim = -1)).mean()
+      return (-(splits * torch.log(splits + 0.001)).sum(dim = -1)).mean()
     
+    # we really don't want all the distributions to look the same
+    # hard problem since we want degenerate distributions, but we 
+    # also want all networks to be sampled equally
+    def degeneracy_loss(splits):
+      empirical_model_distribution = splits.mean(dim=[0,1])
+      return (-(empirical_model_distribution * torch.log(empirical_model_distribution)).sum())
+
     def color_loss(color_x, color_y):
       return torch.sum((color_x - color_y)**2, dim=-1).mean()
 
-    def full_loss(rendered_color, actual_color, splits, l=1.0):
+
+    # c loss should be minimized since colors should be similar
+    # e loss should be minimized since each point should only correspond to one model
+    # d loss should be maximized because we want all models to be equally used
+    def full_loss(rendered_color, actual_color, splits, l= 0.05, alpha = 0.005):
        c_loss = ObjectNerf.color_loss(rendered_color, actual_color)
        e_loss = ObjectNerf.entropy_loss(splits)
-       return c_loss + e_loss*l
+       d_loss = ObjectNerf.degeneracy_loss(splits)
+       return c_loss + (e_loss*alpha - d_loss)*l, c_loss, e_loss, d_loss
        
 
 # get points along a ray
@@ -126,5 +143,5 @@ if __name__ == '__main__':
     model = ObjectNerf()
     origins, ray_directions, colors = dataset.get_batch(np.random.choice(len(dataset), 44))
     rendered_colors = model(origins, ray_directions, 2, 6, 100)
-    
+
     
