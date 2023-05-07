@@ -1,0 +1,67 @@
+world_points_shape torch.Size([262144, 100, 3])
+torch.Size([262144, 100, 33])
+torch.Size([262144, 100, 36])
+62530.69
+world_points_shape torch.Size([262144, 100, 3])
+torch.Size([262144, 100, 33])
+torch.Size([262144, 100, 36])
+59982.375
+world_points_shape torch.Size([262144, 100, 3])
+torch.Size([262144, 100, 33])
+torch.Size([262144, 100, 36])
+58917.297
+world_points_shape torch.Size([262144, 100, 3])
+torch.Size([262144, 100, 33])
+torch.Size([262144, 100, 36])
+56042.4
+world_points_shape torch.Size([262144, 100, 3])
+torch.Size([262144, 100, 33])
+torch.Size([262144, 100, 36])
+53492.875
+world_points_shape torch.Size([262144, 100, 3])
+torch.Size([262144, 100, 33])
+torch.Size([262144, 100, 36])
+51787.055
+world_points_shape torch.Size([262144, 100, 3])
+torch.Size([262144, 100, 33])
+torch.Size([262144, 100, 36])
+51460.44
+world_points_shape torch.Size([262144, 100, 3])
+torch.Size([262144, 100, 33])
+torch.Size([262144, 100, 36])
+52331.61
+world_points_shape torch.Size([262144, 100, 3])
+torch.Size([262144, 100, 33])
+torch.Size([262144, 100, 36])
+51841.26
+world_points_shape torch.Size([262144, 100, 3])
+torch.Size([262144, 100, 33])
+torch.Size([262144, 100, 36])
+51190.36
+world_points_shape torch.Size([262144, 100, 3])
+torch.Size([262144, 100, 33])
+torch.Size([262144, 100, 36])
+49826.598
+world_points_shape torch.Size([262144, 100, 3])
+torch.Size([262144, 100, 33])
+torch.Size([262144, 100, 36])
+49327.46
+world_points_shape torch.Size([262144, 100, 3])
+torch.Size([262144, 100, 33])
+torch.Size([262144, 100, 36])
+50019.887
+world_points_shape torch.Size([262144, 100, 3])
+torch.Size([262144, 100, 33])
+torch.Size([262144, 100, 36])
+49917.137
+world_points_shape torch.Size([262144, 100, 3])
+torch.Size([262144, 100, 33])
+torch.Size([262144, 100, 36])
+50369.79
+world_points_shape torch.Size([262144, 100, 3])
+torch.Size([262144, 100, 33])
+torch.Size([262144, 100, 36])
+Traceback (most recent call last):
+  File "/home/saumyam/NerfFinalProject/NERF/RunNerf.py", line 40, in <module>
+    print(loss_val.detach().cpu().numpy())
+KeyboardInterrupt

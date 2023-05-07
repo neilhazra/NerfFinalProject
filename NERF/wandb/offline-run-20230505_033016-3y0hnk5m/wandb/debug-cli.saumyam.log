@@ -1,0 +1,21 @@
+2023-05-05 14:26:37 INFO open for scan: /home/saumyam/NerfFinalProject/NERF/wandb/offline-run-20230505_033016-3y0hnk5m/run-3y0hnk5m.wandb
+2023-05-05 14:26:37 INFO watching files in: /home/saumyam/NerfFinalProject/NERF/wandb/offline-run-20230505_033016-3y0hnk5m/files
+2023-05-05 14:26:37 INFO run started: 3y0hnk5m with start time 1683271816.076341
+2023-05-05 14:26:37 INFO saving file wandb-metadata.json with policy now
+2023-05-05 14:26:37 INFO shutting down sender
+2023-05-05 14:26:37 INFO Uploaded file /tmp/tmpbh2zrrllwandb/1ca8ivrf-wandb-metadata.json
+2023-05-05 14:26:38 INFO file/dir modified: /home/saumyam/NerfFinalProject/NERF/wandb/offline-run-20230505_033016-3y0hnk5m/files/output.log
+2023-05-05 14:26:39 INFO shutting down directory watcher
+2023-05-05 14:26:40 INFO file/dir modified: /home/saumyam/NerfFinalProject/NERF/wandb/offline-run-20230505_033016-3y0hnk5m/files/output.log
+2023-05-05 14:26:40 INFO scan: /home/saumyam/NerfFinalProject/NERF/wandb/offline-run-20230505_033016-3y0hnk5m/files
+2023-05-05 14:26:40 INFO scan save: /home/saumyam/NerfFinalProject/NERF/wandb/offline-run-20230505_033016-3y0hnk5m/files/requirements.txt requirements.txt
+2023-05-05 14:26:40 INFO scan save: /home/saumyam/NerfFinalProject/NERF/wandb/offline-run-20230505_033016-3y0hnk5m/files/conda-environment.yaml conda-environment.yaml
+2023-05-05 14:26:40 INFO scan save: /home/saumyam/NerfFinalProject/NERF/wandb/offline-run-20230505_033016-3y0hnk5m/files/wandb-metadata.json wandb-metadata.json
+2023-05-05 14:26:40 INFO scan save: /home/saumyam/NerfFinalProject/NERF/wandb/offline-run-20230505_033016-3y0hnk5m/files/config.yaml config.yaml
+2023-05-05 14:26:40 INFO scan save: /home/saumyam/NerfFinalProject/NERF/wandb/offline-run-20230505_033016-3y0hnk5m/files/output.log output.log
+2023-05-05 14:26:40 INFO shutting down file pusher
+2023-05-05 14:26:40 INFO waiting for file pusher
+2023-05-05 14:26:40 INFO Uploaded file /home/saumyam/NerfFinalProject/NERF/wandb/offline-run-20230505_033016-3y0hnk5m/files/requirements.txt
+2023-05-05 14:26:40 INFO Uploaded file /home/saumyam/NerfFinalProject/NERF/wandb/offline-run-20230505_033016-3y0hnk5m/files/conda-environment.yaml
+2023-05-05 14:26:40 INFO Uploaded file /home/saumyam/NerfFinalProject/NERF/wandb/offline-run-20230505_033016-3y0hnk5m/files/config.yaml
+2023-05-05 14:26:40 INFO Uploaded file /home/saumyam/NerfFinalProject/NERF/wandb/offline-run-20230505_033016-3y0hnk5m/files/output.log

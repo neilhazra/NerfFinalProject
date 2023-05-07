@@ -6,7 +6,7 @@
 #SBATCH --mem=50GB
 #SBATCH --constraint=gpu80
 #SBATCH --gres=gpu:1
-#SBATCH --job-name=L=15
+#SBATCH --job-name=256CONTD
 #SBATCH --mail-type=begin        
 #SBATCH --mail-type=end
 #SBATCH --mail-user=saumyam@princeton.edu

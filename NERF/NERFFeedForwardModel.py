@@ -3,14 +3,15 @@ import torch.nn.functional as F
 import torch
 
 L = 10
+size=256
 class NerfModel(nn.Module):
     def __init__(self):
       super(NerfModel, self).__init__()
       # if positionally encoded, 6 * L + 3 x,y,z original + direction
-      self.linear1 = nn.Linear(6*L + 6, 128) # x,y,z, normalized_direction_vector
-      self.linear2 = nn.Linear(128, 128)
-      self.linear3 = nn.Linear(128, 128)
-      self.linear4 = nn.Linear(128, 4) # r,g,b, sigma
+      self.linear1 = nn.Linear(6*L + 6, size) # x,y,z, normalized_direction_vector
+      self.linear2 = nn.Linear(size, size)
+      self.linear3 = nn.Linear(size, size)
+      self.linear4 = nn.Linear(size, 4) # r,g,b, sigma
 
     # x represents our data
     def forward(self, x):

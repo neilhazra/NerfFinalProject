@@ -1,0 +1,5 @@
+W&B offline. Running your script from this directory will only write metadata locally. Use wandb disabled to completely turn off W&B.
+wandb: Tracking run with wandb version 0.14.0
+wandb: W&B syncing is set to `offline` in this directory.  
+wandb: Run `wandb online` or set WANDB_MODE=online to enable cloud syncing.
+slurmstepd: error: *** JOB 47469574 ON della-l03g3 CANCELLED AT 2023-05-06T03:13:55 DUE TO TIME LIMIT ***

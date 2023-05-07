@@ -1,0 +1,12 @@
+Iteration:  0 loss:  61402.6
+Iteration:  1 loss:  57967.938
+Iteration:  2 loss:  54941.027
+Iteration:  3 loss:  55968.066
+Iteration:  4 loss:  52431.688
+Iteration:  5 loss:  51976.74
+Iteration:  6 loss:  51874.797
+Iteration:  7 loss:  51711.656
+Traceback (most recent call last):
+  File "/home/saumyam/NerfFinalProject/NERF/RunNerf.py", line 38, in <module>
+    loss_val = loss(rendered_colors, colors.cuda())
+KeyboardInterrupt

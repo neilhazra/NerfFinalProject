@@ -1,0 +1,8 @@
+Iteration:  0 loss:  59217.0
+Iteration:  1 loss:  56295.773
+Iteration:  2 loss:  52969.297
+Iteration:  3 loss:  51853.53
+Traceback (most recent call last):
+  File "/home/saumyam/NerfFinalProject/NERF/RunNerf.py", line 42, in <module>
+    print('Iteration: ', i, 'loss: ', loss_val.detach().cpu().numpy())
+KeyboardInterrupt

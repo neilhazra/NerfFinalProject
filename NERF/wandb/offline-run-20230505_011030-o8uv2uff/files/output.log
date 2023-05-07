@@ -1,0 +1,32 @@
+65279.93
+62356.32
+60632.03
+58864.094
+56221.85
+54541.0
+52467.703
+50994.383
+51028.27
+51999.93
+52155.883
+51772.438
+50619.668
+50434.793
+49928.5
+50366.555
+50202.336
+50058.58
+50080.03
+49646.68
+49929.64
+49435.836
+49311.992
+49442.938
+48960.938
+48981.79
+48889.5
+48729.953
+Traceback (most recent call last):
+  File "/home/saumyam/NerfFinalProject/NERF/RunNerf.py", line 36, in <module>
+    loss_val = loss(rendered_colors, colors.cuda())
+KeyboardInterrupt

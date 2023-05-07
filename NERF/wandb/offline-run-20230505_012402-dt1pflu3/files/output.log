@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "/home/saumyam/NerfFinalProject/NERF/RunNerf.py", line 36, in <module>
+    rendered_colors = training_forward_pass(model, origins.cuda(), ray_directions.cuda(), 2, 6, 100)
+  File "/home/saumyam/NerfFinalProject/NERF/NERFFeedForwardModel.py", line 114, in training_forward_pass
+    nerf_eval = evaluate_nerf_along_ray(model, ray, ray_direction)
+  File "/home/saumyam/NerfFinalProject/NERF/NERFFeedForwardModel.py", line 88, in evaluate_nerf_along_ray
+    return nerf_model(nn_in.view(-1, 6*L + 6)).view(batch_size, num_integration_points, 4)
+  File "/home/saumyam/.conda/envs/nlp/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/saumyam/NerfFinalProject/NERF/NERFFeedForwardModel.py", line 18, in forward
+    x = self.linear1(x)
+  File "/home/saumyam/.conda/envs/nlp/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/saumyam/.conda/envs/nlp/lib/python3.10/site-packages/torch/nn/modules/linear.py", line 114, in forward
+    return F.linear(input, self.weight, self.bias)
+RuntimeError: mat1 and mat2 shapes cannot be multiplied (26214400x36 and 6x128)
