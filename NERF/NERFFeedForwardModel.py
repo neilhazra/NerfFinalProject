@@ -2,8 +2,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch
 
-L = 10
-size=256
+L = 5
+size=128
 class NerfModel(nn.Module):
     def __init__(self):
       super(NerfModel, self).__init__()

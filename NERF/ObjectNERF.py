@@ -9,7 +9,7 @@ import torch.nn.functional as F
 import torch
 
 L = 5 # positional encodings
-N = 8 # number of mini-nerf models
+N = 2 # number of mini-nerf models
 
 class ModelSplitter(nn.Module):
   #maybe make this more complex
@@ -45,7 +45,7 @@ class MiniNerfModel(nn.Module):
 class ObjectNerf(nn.Module):
     def __init__(self):
       super(ObjectNerf, self).__init__()
-      self.mini_nerfs = [MiniNerfModel() for i in range(N)] # generate all the mini-nerfs
+      self.mini_nerfs = nn.ModuleList([MiniNerfModel() for i in range(N)]) # generate all the mini-nerfs
       self.splitter = ModelSplitter()
 
     def forward(self, ray_origin, ray_direction, scene_start, scene_end, num_integration_points):
@@ -55,6 +55,19 @@ class ObjectNerf(nn.Module):
       splits = self.splitter(ray)
       evals = torch.stack(evals, dim=-1)
       nerf_eval = (evals * splits[:,:,None, :]).sum(dim = -1)
+      rendered_color = integrate(nerf_eval, scalar_array)
+      return rendered_color, splits
+    
+    def forward_eval(self, ray_origin, ray_direction, scene_start, scene_end, num_integration_points):
+      scalar_array = get_scalar_array(scene_start, scene_end, num_integration_points).to(ray_origin) #map to same device automatically
+      ray = ray_direction[:,None, :] * scalar_array[None, :, None] + ray_origin[:,None,:]
+      evals = [evaluate_nerf_along_ray(model, ray, ray_direction) for model in self.mini_nerfs]
+      splits = self.splitter(ray)
+      max_idx = torch.argmax(splits, -1, keepdim=True)
+      one_hot = torch.zeros(splits.shape).to(splits)
+      one_hot.scatter_(-1, max_idx, 1)
+      evals = torch.stack(evals, dim=-1)
+      nerf_eval = (evals * one_hot[:,:,None, :]).sum(dim = -1)
       rendered_color = integrate(nerf_eval, scalar_array)
       return rendered_color, splits
     
@@ -79,7 +92,7 @@ class ObjectNerf(nn.Module):
     # c loss should be minimized since colors should be similar
     # e loss should be minimized since each point should only correspond to one model
     # d loss should be maximized because we want all models to be equally used
-    def full_loss(rendered_color, actual_color, splits, l= 0.05, alpha = 0.005):
+    def full_loss(rendered_color, actual_color, splits, l= 1, alpha=1):
        c_loss = ObjectNerf.color_loss(rendered_color, actual_color)
        e_loss = ObjectNerf.entropy_loss(splits)
        d_loss = ObjectNerf.degeneracy_loss(splits)
@@ -139,7 +152,7 @@ def integrate(nerf_eval, scalar_array):
 if __name__ == '__main__':
     from DataLoader import NerfDataset
     import numpy as np
-    dataset = NerfDataset(data_root_dir='/Users/neilhazra/NerfFinalProject/NERF/data/drums')
+    dataset = NerfDataset(data_root_dir='./data/drums')
     model = ObjectNerf()
     origins, ray_directions, colors = dataset.get_batch(np.random.choice(len(dataset), 44))
     rendered_colors = model(origins, ray_directions, 2, 6, 100)

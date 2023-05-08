@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 dataset = NerfDataset()
 model = NerfModel().cuda()
 # COMMENT/UNCOMMENT THIS LINE WHEN CONTINUING RUNS
-model.load_state_dict(torch.load("./model_256/nerf_model_40000_.model"))
+# model.load_state_dict(torch.load("./model_256/nerf_model_40000_.model"))
 
 optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 
@@ -33,9 +33,9 @@ wandb.init(
     "L":10,
     }
 )
-num_iters = 100000
+num_iters = 5000
 
-for i in range(40001, num_iters):
+for i in range(num_iters):
     origins, ray_directions, colors = dataset.get_batch(np.random.choice(len(dataset), 32768*4))
     rendered_colors = training_forward_pass(model, origins.cuda(), ray_directions.cuda(), 2, 6, 100)
     colors = colors[:,:3]
@@ -52,7 +52,7 @@ for i in range(40001, num_iters):
 
         wandb.log({"loss": loss_val.detach().cpu().numpy()}) 
     
-    if i % 5000 == 0:
-        with open('./model_256/' + 'nerf_model_' + str(i) + '_.model', 'wb') as f:
+    if i % 100 == 0:
+        with open('./model_256_incremental/' + 'nerf_model_' + str(i) + '_.model', 'wb') as f:
             torch.save(model.state_dict(), f)
 # wandb sync /home/saumyam/NerfFinalProject/NERF/wandb/offline-run-20230504_2201
